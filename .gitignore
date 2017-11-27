@@ -1,5 +1,6 @@
+bin/
 target/
-.idea
-MinigamesSk.iml
+.idea/
+LiteBansSk.iml
 .project
 .classpath

@@ -1,10 +1,7 @@
 # LiteBansSk
 Skript Addon for [LiteBans](https://www.spigotmc.org/resources/3715/)
 
-See the [wiki](https://github.com/Pugabyte/LiteBansSk/wiki) for usage
-
-## Download
-[LiteBansSk.jar](http://dl.bn-mc.net/?q=litebanssk)
+[Wiki](https://github.com/Pugabyte/LiteBansSk/wiki) | [Download](http://dl.bear-nation.net/?q=litebanssk) | [SkUnity](https://forums.skunity.com/resources/391/) | [LiteBans](https://www.spigotmc.org/resources/3715/)
 
 ## Building
 ```

@@ -15,9 +15,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nullable;
-import java.awt.*;
 import java.io.IOException;
-
 
 public class LiteBansSk extends JavaPlugin {
 	private static LiteBansSk instance;

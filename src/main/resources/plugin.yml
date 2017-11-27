@@ -1,5 +1,6 @@
 name: LiteBansSk
 main: me.pugabyte.litebanssk.LiteBansSk
 author: Pugabyte
-version: 0.1
+website: https://github.com/Pugabyte/LiteBansSk
+version: 0.3
 depend: [LiteBans, Skript]

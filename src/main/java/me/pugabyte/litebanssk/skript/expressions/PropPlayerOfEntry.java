@@ -3,21 +3,16 @@ package me.pugabyte.litebanssk.skript.expressions;
 import ch.njol.skript.expressions.base.PropertyExpression;
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import litebans.api.Entry;
-import me.pugabyte.litebanssk.LiteBansSk;
-import org.bukkit.OfflinePlayer;
 
-import java.util.UUID;
-
-public class PropPlayerOfEntry extends SimplePropertyExpression<Entry, OfflinePlayer> {
+public class PropPlayerOfEntry extends SimplePropertyExpression<Entry, String> {
 
 	static {
-		PropertyExpression.register(PropPlayerOfEntry.class, OfflinePlayer.class, "player", "entry");
+		PropertyExpression.register(PropPlayerOfEntry.class, String.class, "player", "entry");
 	}
 
 	@Override
-	public OfflinePlayer convert(final Entry entry) {
-		UUID uuid = UUID.fromString(entry.getUuid());
-		return LiteBansSk.getInstance().getServer().getOfflinePlayer(uuid);
+	public String convert(final Entry entry) {
+		return entry.getUuid();
 	}
 
 	@Override
@@ -26,7 +21,7 @@ public class PropPlayerOfEntry extends SimplePropertyExpression<Entry, OfflinePl
 	}
 
 	@Override
-	public Class<? extends OfflinePlayer> getReturnType() {
-		return OfflinePlayer.class;
+	public Class<? extends String> getReturnType() {
+		return String.class;
 	}
 }

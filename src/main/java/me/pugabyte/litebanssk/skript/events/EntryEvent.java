@@ -6,10 +6,15 @@ import org.bukkit.event.HandlerList;
 
 public class EntryEvent extends Event {
 
-	private final Entry entry;
+	private static final HandlerList handlers = new HandlerList();
+	private Entry entry;
 
-	public EntryEvent(Entry entry) {
+	public EntryEvent(final Entry entry) {
 		this.entry = entry;
+	}
+
+	public static HandlerList getHandlerList() {
+		return handlers;
 	}
 
 	public Entry getEntry() {
@@ -18,6 +23,6 @@ public class EntryEvent extends Event {
 
 	@Override
 	public HandlerList getHandlers() {
-		return null;
+		return handlers;
 	}
 }

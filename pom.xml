@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>me.pugabyte</groupId>
     <artifactId>LiteBansSk</artifactId>
-    <version>0.1</version>
+    <version>0.3</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -44,6 +44,10 @@
             <id>skript-repo</id>
             <url>http://maven.njol.ch/repo/</url>
         </repository>
+        <repository>
+            <id>jitpack-repo</id>
+            <url>https://jitpack.io</url>
+        </repository>
     </repositories>
     <dependencies>
         <!--Spigot-->
@@ -62,8 +66,8 @@
         </dependency>
         <!--LiteBans-->
         <dependency>
-            <groupId>litebans</groupId>
-            <artifactId>api</artifactId>
+            <groupId>com.github.ruany</groupId>
+            <artifactId>LiteBansAPI</artifactId>
             <version>0.2</version>
             <scope>provided</scope>
         </dependency>

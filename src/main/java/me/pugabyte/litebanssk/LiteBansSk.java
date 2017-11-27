@@ -8,10 +8,11 @@ import ch.njol.skript.expressions.base.EventValueExpression;
 import ch.njol.skript.lang.ParseContext;
 import ch.njol.skript.lang.util.SimpleEvent;
 import ch.njol.skript.registrations.Classes;
+import ch.njol.skript.registrations.EventValues;
+import ch.njol.skript.util.Getter;
 import litebans.api.Entry;
 import litebans.api.Events;
 import me.pugabyte.litebanssk.skript.events.*;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nullable;
@@ -20,8 +21,6 @@ import java.io.IOException;
 public class LiteBansSk extends JavaPlugin {
 	private static LiteBansSk instance;
 	private static SkriptAddon addonInstance;
-	private Events.Listener newEntryListener;
-	private Events.Listener broadcastListener;
 
 	public LiteBansSk() {
 		if (instance == null) {
@@ -29,21 +28,6 @@ public class LiteBansSk extends JavaPlugin {
 		} else {
 			throw new IllegalStateException();
 		}
-	}
-
-	@Override
-	public void onEnable() {
-		try{
-			register();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Override
-	public void onDisable() {
-		Events.get().unregister(newEntryListener);
-		Events.get().unregister(broadcastListener);
 	}
 
 	public static SkriptAddon getAddonInstance() {
@@ -60,37 +44,61 @@ public class LiteBansSk extends JavaPlugin {
 		return instance;
 	}
 
+	@Override
+	public void onEnable() {
+		try {
+			register();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void onDisable() {
+	}
+
 	public void register() throws IOException {
-		newEntryListener = new Events.Listener() {
+		Events.get().register(new Events.Listener() {
 			@Override
 			public void entryAdded(Entry entry) {
-				if (entry.getType().equals("ban")) {
-					Bukkit.getPluginManager().callEvent(new BanEvent(entry));
-				} else if (entry.getType().equals("mute")) {
-					Bukkit.getPluginManager().callEvent(new MuteEvent(entry));
-				} else if (entry.getType().equals("kick")) {
-					Bukkit.getPluginManager().callEvent(new KickEvent(entry));
-				} else if (entry.getType().equals("warn")) {
-					Bukkit.getPluginManager().callEvent(new WarnEvent(entry));
+				try {
+					if (entry.getType().equals("ban")) {
+						getInstance().getServer().getPluginManager().callEvent(new BanEvent(entry));
+					} else if (entry.getType().equals("mute")) {
+						getInstance().getServer().getPluginManager().callEvent(new MuteEvent(entry));
+					} else if (entry.getType().equals("kick")) {
+						getInstance().getServer().getPluginManager().callEvent(new KickEvent(entry));
+					} else if (entry.getType().equals("warn")) {
+						getInstance().getServer().getPluginManager().callEvent(new WarnEvent(entry));
+					}
+				} catch (Exception e) {
+					getLogger().severe("Report this error to https://github.com/Pugabyte/LiteBansSk/issues");
+					getLogger().severe("Please include LiteBans, LiteBansSk, and Spigot versions");
+					e.printStackTrace();
 				}
 			}
-		};
+		});
 
-		broadcastListener = new Events.Listener() {
+		Events.get().register(new Events.Listener() {
 			@Override
 			public void broadcastSent(String message, @Nullable String type) {
-				Bukkit.getPluginManager().callEvent(new BroadcastEvent(message, type));
+				getInstance().getServer().getPluginManager().callEvent(new BroadcastEvent(message, type));
 			}
-		};
+		});
 
-		Events.get().register(newEntryListener);
-		Events.get().register(broadcastListener);
+		Skript.registerEvent("litebans entry", SimpleEvent.class, EntryEvent.class, "[on] [new] litebans entry");
+		Skript.registerEvent("litebans ban", SimpleEvent.class, BanEvent.class, "[on] [new] litebans ban");
+		Skript.registerEvent("litebans mute", SimpleEvent.class, MuteEvent.class, "[on] [new] litebans mute");
+		Skript.registerEvent("litebans kick", SimpleEvent.class, KickEvent.class, "[on] [new] litebans kick");
+		Skript.registerEvent("litebans warn", SimpleEvent.class, WarnEvent.class, "[on] [new] litebans warn");
+		Skript.registerEvent("litebans broadcast", SimpleEvent.class, BroadcastEvent.class, "[on] [new] litebans broadcast");
 
-		Skript.registerEvent("[on] [new] litebans entry:", SimpleEvent.class, EntryEvent.class);
-		Skript.registerEvent("[on] [new] litebans ban:", SimpleEvent.class, BanEvent.class);
-		Skript.registerEvent("[on] [new] litebans mute:", SimpleEvent.class, MuteEvent.class);
-		Skript.registerEvent("[on] [new] litebans kick:", SimpleEvent.class, KickEvent.class);
-		Skript.registerEvent("[on] [new] litebans warn:", SimpleEvent.class, WarnEvent.class);
+		EventValues.registerEventValue(BroadcastEvent.class, String.class, new Getter<String, BroadcastEvent>() {
+			@Override
+			public String get(BroadcastEvent e) {
+				return e.getMessage();
+			}
+		}, 0);
 
 		Classes.registerClass(new ClassInfo<>(Entry.class, "entry")
 				.defaultExpression(new EventValueExpression<>(Entry.class))
@@ -112,6 +120,34 @@ public class LiteBansSk extends JavaPlugin {
 
 							public String toVariableNameString(Entry entry) {
 								return Integer.toString(entry.getId());
+							}
+
+							public String getVariableNamePattern() {
+								return ".+";
+							}
+						}
+				));
+
+		Classes.registerClass(new ClassInfo<>(BroadcastEvent.class, "broadcast")
+				.defaultExpression(new EventValueExpression<>(BroadcastEvent.class))
+				.user("broadcast").name("broadcast")
+				.parser(new Parser<BroadcastEvent>() {
+							@Override
+							public boolean canParse(ParseContext context) {
+								return false;
+							}
+
+							@Override
+							public BroadcastEvent parse(String string, ParseContext parseContext) {
+								return null;
+							}
+
+							public String toString(BroadcastEvent event, int flags) {
+								return event.getMessage();
+							}
+
+							public String toVariableNameString(BroadcastEvent event) {
+								return event.getMessage();
 							}
 
 							public String getVariableNamePattern() {

@@ -7,31 +7,26 @@ import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
-import litebans.api.Entry;
-import me.pugabyte.litebanssk.skript.events.*;
+import me.pugabyte.litebanssk.skript.events.BroadcastEvent;
 import org.bukkit.event.Event;
 
-public class ExprEntry extends SimpleExpression<Entry> {
+public class ExprBroadcast extends SimpleExpression<BroadcastEvent> {
 
-	public static String syntax = "event(-| )(ban|mute|kick|warn|entry)";
+	public static String syntax = "[litebans] event(-| )broadcast";
 
 	static {
-		Skript.registerExpression(ExprEntry.class, Entry.class, ExpressionType.SIMPLE, syntax);
+		Skript.registerExpression(ExprBroadcast.class, BroadcastEvent.class, ExpressionType.SIMPLE, syntax);
 	}
 
 	@Override
-	protected Entry[] get(Event event) {
-		return new Entry[]{((EntryEvent) event).getEntry()};
+	protected BroadcastEvent[] get(Event event) {
+		return new BroadcastEvent[]{(BroadcastEvent) event};
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean init(Expression<?>[] expr, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
-		if (ScriptLoader.isCurrentEvent(EntryEvent.class) ||
-				ScriptLoader.isCurrentEvent(BanEvent.class) ||
-				ScriptLoader.isCurrentEvent(MuteEvent.class) ||
-				ScriptLoader.isCurrentEvent(KickEvent.class) ||
-				ScriptLoader.isCurrentEvent(WarnEvent.class)) {
+		if (ScriptLoader.isCurrentEvent(BroadcastEvent.class)) {
 			return true;
 		}
 		return false;
@@ -43,8 +38,8 @@ public class ExprEntry extends SimpleExpression<Entry> {
 	}
 
 	@Override
-	public Class<? extends Entry> getReturnType() {
-		return Entry.class;
+	public Class<? extends BroadcastEvent> getReturnType() {
+		return BroadcastEvent.class;
 	}
 
 	@Override

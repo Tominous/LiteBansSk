@@ -2,22 +2,22 @@ package me.pugabyte.litebanssk.skript.expressions;
 
 import ch.njol.skript.expressions.base.PropertyExpression;
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
-import litebans.api.Entry;
+import me.pugabyte.litebanssk.skript.events.BroadcastEvent;
 
-public class PropExecutorOfEntry extends SimplePropertyExpression<Entry, String> {
+public class PropTypeOfBroadcast extends SimplePropertyExpression<BroadcastEvent, String> {
 
 	static {
-		PropertyExpression.register(PropExecutorOfEntry.class, String.class, "executor", "entry");
+		PropertyExpression.register(PropTypeOfBroadcast.class, String.class, "type", "broadcast");
 	}
 
 	@Override
-	public String convert(final Entry entry) {
-		return entry.getExecutorUUID();
+	public String convert(final BroadcastEvent event) {
+		return event.getType();
 	}
 
 	@Override
 	public String getPropertyName() {
-		return "executor";
+		return "type";
 	}
 
 	@Override

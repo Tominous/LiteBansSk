@@ -4,20 +4,20 @@ import ch.njol.skript.expressions.base.PropertyExpression;
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import litebans.api.Entry;
 
-public class PropExecutorOfEntry extends SimplePropertyExpression<Entry, String> {
+public class PropIpOfEntry extends SimplePropertyExpression<Entry, String> {
 
 	static {
-		PropertyExpression.register(PropExecutorOfEntry.class, String.class, "executor", "entry");
+		PropertyExpression.register(PropIpOfEntry.class, String.class, "ip", "entry");
 	}
 
 	@Override
 	public String convert(final Entry entry) {
-		return entry.getExecutorUUID();
+		return entry.getIp();
 	}
 
 	@Override
 	public String getPropertyName() {
-		return "executor";
+		return "ip";
 	}
 
 	@Override

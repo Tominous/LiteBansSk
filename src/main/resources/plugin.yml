@@ -2,4 +2,4 @@ name: LiteBansSk
 main: me.pugabyte.litebanssk.LiteBansSk
 author: Pugabyte
 version: 0.1
-depends: [LiteBans, Skript]
+depend: [LiteBans, Skript]

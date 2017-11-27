@@ -4,7 +4,7 @@ import ch.njol.skript.ScriptLoader;
 import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
-import ch.njol.skript.lang.SkriptParser;
+import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import litebans.api.Entry;
@@ -26,7 +26,7 @@ public class ExprEntry extends SimpleExpression<Entry> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean init(Expression<?>[] expr, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
+	public boolean init(Expression<?>[] expr, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
 		if (!(ScriptLoader.isCurrentEvent(EntryEvent.class) ||
 				ScriptLoader.isCurrentEvent(BanEvent.class) ||
 				ScriptLoader.isCurrentEvent(MuteEvent.class) ||

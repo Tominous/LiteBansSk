@@ -15,12 +15,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nullable;
+import java.awt.*;
 import java.io.IOException;
 
 
 public class LiteBansSk extends JavaPlugin {
 	private static LiteBansSk instance;
 	private static SkriptAddon addonInstance;
+	private Events.Listener newEntryListener;
+	private Events.Listener broadcastListener;
 
 	public LiteBansSk() {
 		if (instance == null) {
@@ -41,6 +44,8 @@ public class LiteBansSk extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
+		Events.get().unregister(newEntryListener);
+		Events.get().unregister(broadcastListener);
 	}
 
 	public static SkriptAddon getAddonInstance() {
@@ -58,7 +63,7 @@ public class LiteBansSk extends JavaPlugin {
 	}
 
 	public void register() throws IOException {
-		Events.get().register(new Events.Listener() {
+		newEntryListener = new Events.Listener() {
 			@Override
 			public void entryAdded(Entry entry) {
 				if (entry.getType().equals("ban")) {
@@ -71,14 +76,23 @@ public class LiteBansSk extends JavaPlugin {
 					Bukkit.getPluginManager().callEvent(new WarnEvent(entry));
 				}
 			}
-		});
+		};
 
-		Events.get().register(new Events.Listener() {
+		broadcastListener = new Events.Listener() {
 			@Override
 			public void broadcastSent(String message, @Nullable String type) {
 				Bukkit.getPluginManager().callEvent(new BroadcastEvent(message, type));
 			}
-		});
+		};
+
+		Events.get().register(newEntryListener);
+		Events.get().register(broadcastListener);
+
+		Skript.registerEvent("[on] [new] litebans entry:", SimpleEvent.class, EntryEvent.class);
+		Skript.registerEvent("[on] [new] litebans ban:", SimpleEvent.class, BanEvent.class);
+		Skript.registerEvent("[on] [new] litebans mute:", SimpleEvent.class, MuteEvent.class);
+		Skript.registerEvent("[on] [new] litebans kick:", SimpleEvent.class, KickEvent.class);
+		Skript.registerEvent("[on] [new] litebans warn:", SimpleEvent.class, WarnEvent.class);
 
 		Classes.registerClass(new ClassInfo<>(Entry.class, "entry")
 				.defaultExpression(new EventValueExpression<>(Entry.class))
@@ -107,11 +121,6 @@ public class LiteBansSk extends JavaPlugin {
 							}
 						}
 				));
-		Skript.registerEvent("[on] [new] litebans entry:", SimpleEvent.class, EntryEvent.class);
-		Skript.registerEvent("[on] [new] litebans ban:", SimpleEvent.class, BanEvent.class);
-		Skript.registerEvent("[on] [new] litebans mute:", SimpleEvent.class, MuteEvent.class);
-		Skript.registerEvent("[on] [new] litebans kick:", SimpleEvent.class, KickEvent.class);
-		Skript.registerEvent("[on] [new] litebans warn:", SimpleEvent.class, WarnEvent.class);
 
 		getAddonInstance().loadClasses("me.pugabyte.litebanssk", "skript");
 	}

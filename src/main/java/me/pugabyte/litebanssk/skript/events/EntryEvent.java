@@ -5,6 +5,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 public class EntryEvent extends Event {
+
 	private final Entry entry;
 
 	public EntryEvent(Entry entry) {

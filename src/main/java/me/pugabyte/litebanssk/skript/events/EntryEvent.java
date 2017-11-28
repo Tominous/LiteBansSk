@@ -12,6 +12,7 @@ public class EntryEvent extends Event {
 
 	static {
 		Skript.registerEvent("litebans entry", SimpleEvent.class, EntryEvent.class, "[new] litebans entry");
+
 		EventValues.registerEventValue(EntryEvent.class, Entry.class, new Getter<Entry, EntryEvent>() {
 			@Override
 			public Entry get(EntryEvent event) {

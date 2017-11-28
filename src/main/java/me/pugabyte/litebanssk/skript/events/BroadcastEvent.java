@@ -11,10 +11,10 @@ public class BroadcastEvent extends Event {
 
 	static {
 		Skript.registerEvent("litebans broadcast", SimpleEvent.class, BroadcastEvent.class, "litebans broadcast");
-		EventValues.registerEventValue(BroadcastEvent.class, String.class, new Getter<String, BroadcastEvent>() {
+		EventValues.registerEventValue(BroadcastEvent.class, BroadcastEvent.class, new Getter<BroadcastEvent, BroadcastEvent>() {
 			@Override
-			public String get(BroadcastEvent event) {
-				return event.getMessage();
+			public BroadcastEvent get(BroadcastEvent event) {
+				return event;
 			}
 		}, 0);
 	}

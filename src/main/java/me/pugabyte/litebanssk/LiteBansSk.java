@@ -28,18 +28,18 @@ public class LiteBansSk extends JavaPlugin {
 		}
 	}
 
-	public static SkriptAddon getAddonInstance() {
-		if (addonInstance == null) {
-			addonInstance = Skript.registerAddon(getInstance());
-		}
-		return addonInstance;
-	}
-
 	public static LiteBansSk getInstance() {
 		if (instance == null) {
 			throw new IllegalStateException();
 		}
 		return instance;
+	}
+
+	public static SkriptAddon getAddonInstance() {
+		if (addonInstance == null) {
+			addonInstance = Skript.registerAddon(getInstance());
+		}
+		return addonInstance;
 	}
 
 	@Override

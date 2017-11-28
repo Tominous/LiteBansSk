@@ -11,14 +11,14 @@ import org.bukkit.event.Event;
 
 public class EffCreateEntry extends Effect {
 
-	public static String syntax = "(0¦ban|1¦silently ban|2¦mute|3¦silently mute|4¦kick|5¦silently kick|6¦warn|7¦silently warn) %string% " +
+	public static String syntax = "[(1¦silently)] (2¦ban|4¦mute|6¦kick|8¦warn) %string% " +
 			"[with reason %-string%] [for duration %-timespan%] [as %-string%]";
 
 	private Expression<String> punished;
 	private Expression<String> reason;
 	private Expression<Timespan> duration;
 	private Expression<String> executor;
-	private int action;
+	private int parseMark;
 
 	static {
 		Skript.registerEffect(EffCreateEntry.class, syntax);
@@ -27,33 +27,28 @@ public class EffCreateEntry extends Effect {
 	@Override
 	protected void execute(Event event) {
 		String command;
+
+		int action = (parseMark / 2) - 1;
 		switch (action) {
 			case 0:
 				command = "ban";
 				break;
 			case 1:
-				command = "ban -s";
-				break;
-			case 2:
 				command = "mute";
 				break;
-			case 3:
-				command = "mute -s";
-				break;
-			case 4:
+			case 2:
 				command = "kick";
 				break;
-			case 5:
-				command = "kick -s";
-				break;
-			case 6:
+			case 3:
 				command = "warn";
-				break;
-			case 7:
-				command = "warn -s";
 				break;
 			default:
 				return;
+		}
+
+		// Silently
+		if ((parseMark & 1) == 1) {
+			command += " -s";
 		}
 
 		// Punished
@@ -64,7 +59,7 @@ public class EffCreateEntry extends Effect {
 
 		// Duration
 		// Ignore for kick and warn
-		if (action < 4) {
+		if (action < 2) {
 			if (duration != null) {
 				command += " " + (duration.getSingle(event).getTicks_i() / 20) + "s";
 			}
@@ -90,7 +85,7 @@ public class EffCreateEntry extends Effect {
 		reason = (Expression<String>) expr[1];
 		duration = (Expression<Timespan>) expr[2];
 		executor = (Expression<String>) expr[3];
-		action = parseResult.mark;
+		parseMark = parseResult.mark;
 		return true;
 	}
 

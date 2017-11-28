@@ -21,6 +21,8 @@ import java.io.IOException;
 public class LiteBansSk extends JavaPlugin {
 	private static LiteBansSk instance;
 	private static SkriptAddon addonInstance;
+	private Events.Listener entryAdded;
+	private Events.Listener broadcastSent;
 
 	public LiteBansSk() {
 		if (instance == null) {
@@ -47,18 +49,37 @@ public class LiteBansSk extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		try {
+			String version = getInstance().getServer().getPluginManager().getPlugin("LiteBans").getDescription().getVersion();
+
+			if (version.startsWith("2.")) {
+				double versionDouble;
+				try {
+					versionDouble = Double.parseDouble(version.replaceFirst("2.", ""));
+
+					// Most recent version I've built against
+					if (versionDouble < 2.5) {
+						getLogger().warning("LiteBans is not updated; some features may not work!");
+						getLogger().warning("Update: https://www.spigotmc.org/resources/3715/");
+					}
+				} catch (NumberFormatException e) {
+					getLogger().warning("Could not parse LiteBans version '" + version + "'");
+				}
+			}
 			register();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 	}
 
 	@Override
 	public void onDisable() {
+		Events.get().unregister(entryAdded);
+		Events.get().unregister(broadcastSent);
 	}
 
 	public void register() throws IOException {
-		Events.get().register(new Events.Listener() {
+		entryAdded = new Events.Listener() {
 			@Override
 			public void entryAdded(Entry entry) {
 				try {
@@ -77,21 +98,24 @@ public class LiteBansSk extends JavaPlugin {
 					e.printStackTrace();
 				}
 			}
-		});
+		};
 
-		Events.get().register(new Events.Listener() {
+		broadcastSent = new Events.Listener() {
 			@Override
 			public void broadcastSent(String message, @Nullable String type) {
 				getInstance().getServer().getPluginManager().callEvent(new BroadcastEvent(message, type));
 			}
-		});
+		};
+
+		Events.get().register(entryAdded);
+		Events.get().register(broadcastSent);
 
 		Skript.registerEvent("litebans entry", SimpleEvent.class, EntryEvent.class, "[on] [new] litebans entry");
 		Skript.registerEvent("litebans ban", SimpleEvent.class, BanEvent.class, "[on] [new] litebans ban");
 		Skript.registerEvent("litebans mute", SimpleEvent.class, MuteEvent.class, "[on] [new] litebans mute");
 		Skript.registerEvent("litebans kick", SimpleEvent.class, KickEvent.class, "[on] [new] litebans kick");
 		Skript.registerEvent("litebans warn", SimpleEvent.class, WarnEvent.class, "[on] [new] litebans warn");
-		Skript.registerEvent("litebans broadcast", SimpleEvent.class, BroadcastEvent.class, "[on] [new] litebans broadcast");
+		Skript.registerEvent("litebans broadcast", SimpleEvent.class, BroadcastEvent.class, "[on] litebans broadcast");
 
 		EventValues.registerEventValue(BroadcastEvent.class, String.class, new Getter<String, BroadcastEvent>() {
 			@Override

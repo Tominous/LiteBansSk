@@ -11,7 +11,7 @@ import org.bukkit.event.Event;
 
 public class EffCreateEntry extends Effect {
 
-	public static String syntax = "[silently] (0¦ban|1¦mute|2¦kick|3¦warn) %string% " +
+	public static String syntax = "(0¦ban|1¦silently ban|2¦mute|3¦silently mute|4¦kick|5¦silently kick|6¦warn|7¦silently warn) %string% " +
 			"[with reason %-string%] [for duration %-timespan%] [as %-string%]";
 
 	private Expression<String> punished;
@@ -32,39 +32,51 @@ public class EffCreateEntry extends Effect {
 				command = "ban";
 				break;
 			case 1:
-				command = "mute";
+				command = "ban -s";
 				break;
 			case 2:
-				command = "kick";
+				command = "mute";
 				break;
 			case 3:
+				command = "mute -s";
+				break;
+			case 4:
+				command = "kick";
+				break;
+			case 5:
+				command = "kick -s";
+				break;
+			case 6:
 				command = "warn";
+				break;
+			case 7:
+				command = "warn -s";
 				break;
 			default:
 				return;
 		}
 
 		// Punished
-		if (punished == null || punished.getSingle(event) == null) {
+		if (punished == null) {
 			return;
 		}
 		command += " " + punished.getSingle(event);
 
 		// Duration
 		// Ignore for kick and warn
-		if (action < 2) {
+		if (action < 4) {
 			if (duration != null) {
 				command += " " + (duration.getSingle(event).getTicks_i() / 20) + "s";
 			}
 		}
 
 		// Reason
-		if (reason.getSingle(event) != null) {
+		if (reason != null) {
 			command += " " + reason.getSingle(event);
 		}
 
 		// Executor
-		if (executor != null && executor.getSingle(event) != null) {
+		if (executor != null) {
 			command += " --sender=" + executor.getSingle(event);
 		}
 

@@ -14,7 +14,7 @@ public class PropDurationOfEntry extends SimplePropertyExpression<Entry, Timespa
 	@Override
 	public Timespan convert(final Entry entry) {
 		int ticks = (int) (entry.getDuration() / 50);
-		return Timespan.fromTicks(ticks);
+		return Timespan.fromTicks_i(ticks);
 	}
 
 	@Override

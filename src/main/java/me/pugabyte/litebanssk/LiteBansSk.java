@@ -7,14 +7,11 @@ import ch.njol.skript.classes.Parser;
 import ch.njol.skript.expressions.base.EventValueExpression;
 import ch.njol.skript.lang.ParseContext;
 import ch.njol.skript.registrations.Classes;
-import ch.njol.skript.registrations.EventValues;
-import ch.njol.skript.util.Getter;
 import litebans.api.Entry;
 import litebans.api.Events;
 import me.pugabyte.litebanssk.skript.events.*;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import javax.annotation.Nullable;
 import java.io.IOException;
 
 public class LiteBansSk extends JavaPlugin {
@@ -108,14 +105,13 @@ public class LiteBansSk extends JavaPlugin {
 
 		broadcastSent = new Events.Listener() {
 			@Override
-			public void broadcastSent(String message, @Nullable String type) {
+			public void broadcastSent(String message, String type) {
 				getInstance().getServer().getPluginManager().callEvent(new BroadcastEvent(message, type));
 			}
 		};
 
 		Events.get().register(entryAdded);
 		Events.get().register(broadcastSent);
-
 
 		Classes.registerClass(new ClassInfo<>(Entry.class, "entry")
 				.defaultExpression(new EventValueExpression<>(Entry.class))

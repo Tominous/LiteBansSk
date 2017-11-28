@@ -41,8 +41,8 @@
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
         <repository>
-            <id>skript-repo</id>
-            <url>http://maven.njol.ch/repo/</url>
+            <id>bensku-repo</id>
+            <url>https://raw.githubusercontent.com/bensku/mvn-repo/master</url>
         </repository>
         <repository>
             <id>jitpack-repo</id>
@@ -61,8 +61,14 @@
         <dependency>
             <groupId>ch.njol</groupId>
             <artifactId>skript</artifactId>
-            <version>2.2-SNAPSHOT</version>
+            <version>2.2-dev28b</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!--LiteBans-->
         <dependency>

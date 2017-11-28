@@ -9,7 +9,7 @@ import litebans.api.Entry;
 public class BanEvent extends EntryEvent {
 
 	static {
-		Skript.registerEvent("litebans ban", SimpleEvent.class, BanEvent.class, "[on] [new] litebans ban");
+		Skript.registerEvent("litebans ban", SimpleEvent.class, BanEvent.class, "[new] litebans ban");
 		EventValues.registerEventValue(BanEvent.class, Entry.class, new Getter<Entry, BanEvent>() {
 			@Override
 			public Entry get(BanEvent event) {

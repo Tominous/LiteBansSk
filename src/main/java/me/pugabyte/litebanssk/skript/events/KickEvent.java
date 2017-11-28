@@ -9,7 +9,7 @@ import litebans.api.Entry;
 public class KickEvent extends EntryEvent {
 
 	static {
-		Skript.registerEvent("litebans kick", SimpleEvent.class, EntryEvent.class, "[on] [new] litebans kick");
+		Skript.registerEvent("litebans kick", SimpleEvent.class, KickEvent.class, "[new] litebans kick");
 		EventValues.registerEventValue(KickEvent.class, Entry.class, new Getter<Entry, KickEvent>() {
 			@Override
 			public Entry get(KickEvent event) {

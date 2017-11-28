@@ -10,7 +10,7 @@ import org.bukkit.event.HandlerList;
 public class BroadcastEvent extends Event {
 
 	static {
-		Skript.registerEvent("litebans broadcast", SimpleEvent.class, BroadcastEvent.class, "[on] litebans broadcast");
+		Skript.registerEvent("litebans broadcast", SimpleEvent.class, BroadcastEvent.class, "litebans broadcast");
 		EventValues.registerEventValue(BroadcastEvent.class, String.class, new Getter<String, BroadcastEvent>() {
 			@Override
 			public String get(BroadcastEvent event) {

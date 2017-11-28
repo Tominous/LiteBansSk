@@ -9,7 +9,7 @@ import litebans.api.Entry;
 public class MuteEvent extends EntryEvent {
 
 	static {
-		Skript.registerEvent("litebans mute", SimpleEvent.class, MuteEvent.class, "[on] [new] litebans mute");
+		Skript.registerEvent("litebans mute", SimpleEvent.class, MuteEvent.class, "[new] litebans mute");
 		EventValues.registerEventValue(MuteEvent.class, Entry.class, new Getter<Entry, MuteEvent>() {
 			@Override
 			public Entry get(MuteEvent event) {

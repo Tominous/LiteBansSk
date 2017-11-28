@@ -84,13 +84,21 @@ public class LiteBansSk extends JavaPlugin {
 			public void entryAdded(Entry entry) {
 				try {
 					if (entry.getType().equals("ban")) {
-						getInstance().getServer().getPluginManager().callEvent(new BanEvent(entry));
+						instance.getServer().getScheduler().runTaskLater(instance, () ->
+							instance.getServer().getPluginManager().callEvent(new BanEvent(entry))
+						, 0);
 					} else if (entry.getType().equals("mute")) {
-						getInstance().getServer().getPluginManager().callEvent(new MuteEvent(entry));
+						instance.getServer().getScheduler().runTaskLater(instance, () ->
+							instance.getServer().getPluginManager().callEvent(new MuteEvent(entry))
+						, 0);
 					} else if (entry.getType().equals("kick")) {
-						getInstance().getServer().getPluginManager().callEvent(new KickEvent(entry));
+						instance.getServer().getScheduler().runTaskLater(instance, () ->
+							instance.getServer().getPluginManager().callEvent(new KickEvent(entry))
+						, 0);
 					} else if (entry.getType().equals("warn")) {
-						getInstance().getServer().getPluginManager().callEvent(new WarnEvent(entry));
+						instance.getServer().getScheduler().runTaskLater(instance, () ->
+							instance.getServer().getPluginManager().callEvent(new WarnEvent(entry))
+						, 0);
 					}
 				} catch (Exception e) {
 					getLogger().severe("Report this error to https://github.com/Pugabyte/LiteBansSk/issues");

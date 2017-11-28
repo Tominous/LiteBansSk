@@ -69,7 +69,6 @@ public class LiteBansSk extends JavaPlugin {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	@Override
@@ -118,74 +117,60 @@ public class LiteBansSk extends JavaPlugin {
 		Events.get().register(entryAdded);
 		Events.get().register(broadcastSent);
 
-		Skript.registerEvent("litebans entry", SimpleEvent.class, EntryEvent.class, "[on] [new] litebans entry");
-		Skript.registerEvent("litebans ban", SimpleEvent.class, BanEvent.class, "[on] [new] litebans ban");
-		Skript.registerEvent("litebans mute", SimpleEvent.class, MuteEvent.class, "[on] [new] litebans mute");
-		Skript.registerEvent("litebans kick", SimpleEvent.class, KickEvent.class, "[on] [new] litebans kick");
-		Skript.registerEvent("litebans warn", SimpleEvent.class, WarnEvent.class, "[on] [new] litebans warn");
-		Skript.registerEvent("litebans broadcast", SimpleEvent.class, BroadcastEvent.class, "[on] litebans broadcast");
-
-		EventValues.registerEventValue(BroadcastEvent.class, String.class, new Getter<String, BroadcastEvent>() {
-			@Override
-			public String get(BroadcastEvent e) {
-				return e.getMessage();
-			}
-		}, 0);
-
 		Classes.registerClass(new ClassInfo<>(Entry.class, "entry")
 				.defaultExpression(new EventValueExpression<>(Entry.class))
 				.user("entry").name("entry")
 				.parser(new Parser<Entry>() {
-							@Override
-							public boolean canParse(ParseContext context) {
-								return false;
-							}
-
-							@Override
-							public Entry parse(String string, ParseContext parseContext) {
-								return null;
-							}
-
-							public String toString(Entry entry, int flags) {
-								return Integer.toString(entry.getId());
-							}
-
-							public String toVariableNameString(Entry entry) {
-								return Integer.toString(entry.getId());
-							}
-
-							public String getVariableNamePattern() {
-								return ".+";
-							}
+						@Override
+						public boolean canParse(ParseContext context) {
+							return false;
 						}
+
+						@Override
+						public Entry parse(String string, ParseContext parseContext) {
+							return null;
+						}
+
+						public String toString(Entry entry, int flags) {
+							return Integer.toString(entry.getId());
+						}
+
+						public String toVariableNameString(Entry entry) {
+							return Integer.toString(entry.getId());
+						}
+
+						public String getVariableNamePattern() {
+							return ".+";
+						}
+					}
 				));
 
 		Classes.registerClass(new ClassInfo<>(BroadcastEvent.class, "broadcast")
 				.defaultExpression(new EventValueExpression<>(BroadcastEvent.class))
 				.user("broadcast").name("broadcast")
 				.parser(new Parser<BroadcastEvent>() {
-							@Override
-							public boolean canParse(ParseContext context) {
-								return false;
-							}
+						@Override
+						public boolean canParse(ParseContext context) {
+							return false;
+						}
 
-							@Override
-							public BroadcastEvent parse(String string, ParseContext parseContext) {
-								return null;
-							}
+						@Override
+						public BroadcastEvent parse(String string, ParseContext parseContext) {
+							return null;
+						}
 
-							public String toString(BroadcastEvent event, int flags) {
-								return event.getMessage();
-							}
+						public String toString(BroadcastEvent event, int flags) {
+							return event.getMessage();
+						}
 
-							public String toVariableNameString(BroadcastEvent event) {
-								return event.getMessage();
-							}
+						public String toVariableNameString(BroadcastEvent event) {
+							return event.getMessage();
+						}
 
-							public String getVariableNamePattern() {
+						public String getVariableNamePattern() {
 								return ".+";
 							}
-						}
+					}
 				));
 
 		getAddonInstance().loadClasses("me.pugabyte.litebanssk", "skript");

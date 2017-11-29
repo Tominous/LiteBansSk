@@ -10,13 +10,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 
 public class EffCreateEntry extends Effect {
-
-	public static String syntax = "[(1¦silently)] (2¦ban|4¦mute|6¦kick|8¦warn) %string% " +
-			"[with reason %-string%] [for duration %-timespan%] [as %-string%]";
+	public static String syntax = "[(1¦silently)] [(2¦ip)] (4¦ban|8¦mute|12¦kick|16¦warn) %string% " +
+			"[with reason %-string%] [for duration %-timespan%] [on server %-string%] [as %-string%]";
 
 	private Expression<String> punished;
 	private Expression<String> reason;
 	private Expression<Timespan> duration;
+	private Expression<String> server;
 	private Expression<String> executor;
 	private int parseMark;
 
@@ -28,7 +28,7 @@ public class EffCreateEntry extends Effect {
 	protected void execute(Event event) {
 		String command;
 
-		int action = (parseMark / 2) - 1;
+		int action = (parseMark / 4) - 1;
 		switch (action) {
 			case 0:
 				command = "ban";
@@ -44,6 +44,14 @@ public class EffCreateEntry extends Effect {
 				break;
 			default:
 				return;
+		}
+
+		// IP
+		// Ignore for kick and warn
+		if (action < 2) {
+			if ((parseMark & 2) == 2) {
+				command = "ip" + command;
+			}
 		}
 
 		// Silently
@@ -70,6 +78,11 @@ public class EffCreateEntry extends Effect {
 			command += " " + reason.getSingle(event);
 		}
 
+		// Server
+		if (server != null) {
+			command += " server:" + server.getSingle(event);
+		}
+
 		// Executor
 		if (executor != null) {
 			command += " --sender=" + executor.getSingle(event);
@@ -84,7 +97,8 @@ public class EffCreateEntry extends Effect {
 		punished = (Expression<String>) expr[0];
 		reason = (Expression<String>) expr[1];
 		duration = (Expression<Timespan>) expr[2];
-		executor = (Expression<String>) expr[3];
+		server = (Expression<String>) expr[3];
+		executor = (Expression<String>) expr[4];
 		parseMark = parseResult.mark;
 		return true;
 	}

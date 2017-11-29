@@ -12,7 +12,11 @@ public class PropPlayerOfEntry extends SimplePropertyExpression<Entry, String> {
 
 	@Override
 	public String convert(final Entry entry) {
-		return entry.getUuid();
+		String uuid = entry.getUuid();
+		if (uuid == null || uuid.startsWith("#")) {
+			return null;
+		}
+		return uuid;
 	}
 
 	@Override

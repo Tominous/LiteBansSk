@@ -164,8 +164,8 @@ public class LiteBansSk extends JavaPlugin {
 						}
 
 						public String getVariableNamePattern() {
-								return ".+";
-							}
+							return ".+";
+						}
 					}
 				));
 

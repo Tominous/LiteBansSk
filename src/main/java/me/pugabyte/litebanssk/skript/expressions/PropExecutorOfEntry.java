@@ -12,7 +12,18 @@ public class PropExecutorOfEntry extends SimplePropertyExpression<Entry, String>
 
 	@Override
 	public String convert(final Entry entry) {
-		return entry.getExecutorUUID();
+		String uuid = entry.getExecutorUUID();
+		String name = entry.getExecutorName();
+		if (uuid == null || uuid.startsWith("#")) {
+			return null;
+		} else {
+			// https://github.com/ruany/LiteBansAPI/issues/3
+			if (uuid.equals("CONSOLE") && !name.equals(uuid)) {
+				return name;
+			} else {
+				return uuid;
+			}
+		}
 	}
 
 	@Override

@@ -12,7 +12,11 @@ public class PropIpOfEntry extends SimplePropertyExpression<Entry, String> {
 
 	@Override
 	public String convert(final Entry entry) {
-		return entry.getIp();
+		String ip = entry.getIp();
+		if (ip == null || ip.startsWith("#")) {
+			return null;
+		}
+		return ip;
 	}
 
 	@Override

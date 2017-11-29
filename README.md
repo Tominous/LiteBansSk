@@ -14,7 +14,7 @@ The jar will be inside the `target` folder.
 ## Contact 
 I use Discord for all communication.
 
-[<img src="https://discordapp.com/api/guilds/132680070480396288/widget.png?style=banner3">](https://discord.gg/0jwsKTH4ATkkN8iB)
+[<img src="https://discordapp.com/api/guilds/138464183946575874/widget.png?style=banner3">](https://discord.gg/M6uCh6H)
 
 or Griffin#2583
 

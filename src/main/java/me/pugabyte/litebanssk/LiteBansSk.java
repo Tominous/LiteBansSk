@@ -64,14 +64,8 @@ public class LiteBansSk extends JavaPlugin {
 			} catch (NumberFormatException e) {
 				getLogger().warning("Could not parse LiteBans version '" + version + "'");
 			}
-			Player player = Bukkit.getPlayer("Pugabyte");
-			Timespan hours = (Timespan) Variables.getVariable("hours::" + player.getUniqueId(), null, false);
-			long millis = Long.parseLong(hours.toString());
-			if (millis >= 3600000) {
-
-			}
-
 		}
+
 		try {
 			register();
 		} catch (Exception e) {

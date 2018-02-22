@@ -6,8 +6,11 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.util.Timespan;
 import ch.njol.util.Kleenean;
+import me.pugabyte.litebanssk.LiteBansSk;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
+
+import java.util.concurrent.TimeUnit;
 
 public class EffCreateEntry extends Effect {
 	public static String syntax = "[(1¦silently)] [(2¦ip)] (4¦ban|8¦mute|12¦kick|16¦warn) %string% " +
@@ -69,7 +72,20 @@ public class EffCreateEntry extends Effect {
 		// Ignore for kick and warn
 		if (action < 2) {
 			if (duration != null) {
-				command += " " + (duration.getSingle(event).getTicks_i() / 20) + "s";
+				long millis = duration.getSingle(event).getTicks_i() * 50;
+				int days    = (int) ((millis / (1000*60*60*24)) % 365);
+				int hours   = (int) ((millis / (1000*60*60)) % 24);
+				int minutes = (int) ((millis / (1000*60)) % 60);
+				int seconds = (int) (millis / 1000) % 60 ;
+
+				String durationString = "";
+				if (days != 0) durationString += days + "d";
+				if (hours != 0) durationString += hours + "h";
+				if (minutes != 0) durationString += minutes + "m";
+				if (seconds != 0) durationString += seconds + "s";
+
+				LiteBansSk.getInstance().getLogger().info(durationString);
+				command += " " + durationString;
 			}
 		}
 
